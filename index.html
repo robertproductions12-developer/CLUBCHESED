@@ -29,7 +29,7 @@
             scroll-behavior: smooth;
         }
 
-        /* --- NAVEGACIÓN ESTILO BRANDMODE --- */
+        /* --- NAVEGACIÓN --- */
         nav {
             position: fixed;
             top: 0;
@@ -83,58 +83,40 @@
             box-shadow: 0 10px 20px rgba(0, 114, 255, 0.2);
         }
 
-        .btn-main:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 30px rgba(0, 114, 255, 0.4);
-        }
-
-        /* --- HERO FULL SCREEN --- */
+        /* --- VIDEO HEADER (SIN TEXTO) --- */
         .hero {
-            height: 100vh;
+            position: relative;
+            height: 100vh; /* Ocupa toda la pantalla */
             width: 100%;
+            overflow: hidden;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
-            text-align: center;
-            background: url('tu-fondo-hero.jpg') no-repeat center center/cover;
-            position: relative;
-            overflow: hidden;
+            background-color: black;
         }
 
-        /* Overlay oscuro para que el logo resalte */
+        .hero-video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translate(-50%, -50%);
+            object-fit: cover; /* Mantiene la proporción 1920x1080 llenando el espacio */
+        }
+
+        /* Overlay sutil para el video */
         .hero::after {
             content: "";
             position: absolute;
             inset: 0;
-            background: radial-gradient(circle, rgba(5,10,24,0.2) 0%, rgba(5,10,24,0.9) 100%);
+            background: rgba(5, 10, 24, 0.2);
+            z-index: 1;
         }
 
-        .hero-content {
-            z-index: 10;
-            padding: 20px;
-        }
-
-        .hero-logo {
-            width: 450px;
-            max-width: 90%;
-            filter: drop-shadow(0 0 30px rgba(212, 175, 55, 0.4));
-            animation: fadeInScale 1.5s ease-out;
-        }
-
-        @keyframes fadeInScale {
-            from { opacity: 0; transform: scale(0.8); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        .hero h1 {
-            font-size: clamp(2rem, 8vw, 5rem);
-            font-weight: 900;
-            margin-top: 20px;
-            letter-spacing: -2px;
-        }
-
-        /* --- GALERÍA CINEMATOGRÁFICA --- */
+        /* --- GALERÍA ADAPTABLE --- */
         .full-gallery {
             padding: 0;
             width: 100%;
@@ -143,7 +125,7 @@
         .gallery-item {
             position: relative;
             width: 100%;
-            height: 80vh; /* Casi toda la pantalla */
+            height: 80vh; /* Altura cinemática en PC */
             margin-bottom: 10px;
             overflow: hidden;
             display: flex;
@@ -157,7 +139,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Mantiene la proporción 1920x1080 */
+            object-fit: cover; /* Clave para que la imagen no se deforme */
             transition: transform 2s ease;
             z-index: 1;
         }
@@ -208,11 +190,30 @@
             transition: var(--transition);
         }
 
-        /* --- RESPONSIVE --- */
+        /* --- RESPONSIVE (TELEFONOS MOVILES) --- */
         @media (max-width: 768px) {
             .nav-links { display: none; }
-            .gallery-item { height: 60vh; }
-            .item-info h3 { font-size: 1.8rem; }
+            
+            /* Ajuste para que las imágenes mantengan su impacto en móvil */
+            .gallery-item { 
+                height: 50vh; /* Altura ajustada para pantallas verticales */
+            }
+
+            .item-info {
+                padding: 30px 5%;
+            }
+
+            .item-info h3 { 
+                font-size: 1.5rem; 
+            }
+
+            .item-info p {
+                font-size: 0.9rem;
+            }
+
+            .hero {
+                height: 60vh; /* En móvil el video es un poco más corto para mejor navegación */
+            }
         }
     </style>
 </head>
@@ -223,7 +224,7 @@
     </audio>
 
     <div class="music-toggle" onclick="toggleMusic()" id="musicBtn">
-        <span>🎵 MÚSICA DE FONDO</span>
+        <span>🎵 MÚSICA</span>
         <small id="status">OFF</small>
     </div>
 
@@ -232,18 +233,18 @@
         <ul class="nav-links">
             <li><a href="#inicio">Inicio</a></li>
             <li><a href="#galeria">Generaciones</a></li>
-            <li><a href="#museo">Museo</a></li>
+            <li><a href="#museo">Campamentos</a></li>
         </ul>
         <a href="#redes" class="btn-main">CONTACTO</a>
     </nav>
 
+    <!-- HEADER CON VIDEO (SIN TEXTO) -->
     <header class="hero" id="inicio">
-        <div class="hero-content">
-            <!-- AQUÍ VA TU LOGO GRANDE -->
-            <img src="wee.png" alt="Logo Chesed" class="hero-logo">
-            <h1>AMOR CONSTANTE</h1>
-            <p style="color: var(--gold); letter-spacing: 5px;">EST. 1998</p>
-        </div>
+        <video autoplay muted loop playsinline class="hero-video">
+            <!-- REEMPLAZA "tu-video.mp4" CON EL NOMBRE DE TU ARCHIVO DE VIDEO -->
+            <source src="tu-video.mp4" type="video/mp4">
+            Tu navegador no soporta videos.
+        </video>
     </header>
 
     <main class="full-gallery" id="galeria">
@@ -366,7 +367,6 @@
             }
         }
 
-        // Efecto de aparición suave al hacer scroll
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
