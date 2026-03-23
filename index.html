@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Club de Conquiguías Chesed | Oficial</title>
+    <!-- Fuentes de Google -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #0a1128;
+            --accent-blue: #007bff;
+            --gold: #d4af37;
+            --text-light: #f4f4f4;
+            --glass: rgba(255, 255, 255, 0.05);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--primary-blue);
+            color: var(--text-light);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* --- FONDO ANIMADO --- */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top right, #1a2a6c, #0a1128);
+            z-index: -1;
+        }
+
+        /* --- NAVEGACIÓN --- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(10, 17, 40, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid var(--glass);
+        }
+
+        .logo-nav {
+            font-weight: 900;
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            color: var(--gold);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-light);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-blue);
+        }
+
+        /* BOTÓN ESTILO BRANDMODE */
+        .btn-contact {
+            background: linear-gradient(90deg, #00c6ff, #0072ff);
+            padding: 10px 25px;
+            border-radius: 50px;
+            color: white;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .btn-contact:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 114, 255, 0.5);
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+            background: url('https://via.placeholder.com/1920x1080') no-repeat center center/cover;
+            position: relative;
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(10, 17, 40, 0.7);
+        }
+
+        .hero-content {
+            z-index: 10;
+        }
+
+        .hero-logo {
+            width: 300px;
+            max-width: 80%;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 20px var(--gold));
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--gold);
+            letter-spacing: 5px;
+        }
+
+        /* --- SECCIONES GENERALES --- */
+        section {
+            padding: 100px 10%;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 50px;
+            border-left: 5px solid var(--accent-blue);
+            padding-left: 20px;
+        }
+
+        /* --- GALERÍA 1920x1080 --- */
+        .generations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .photo-card {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1920 / 1080; /* Mantiene la proporción exacta */
+            background: var(--glass);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid var(--glass);
+            transition: var(--transition);
+        }
+
+        .photo-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent-blue);
+        }
+
+        .photo-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .photo-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+        }
+
+        /* --- MUSICA --- */
+        .music-player {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 2000;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            padding: 15px;
+            border-radius: 50px;
+            border: 1px solid var(--gold);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hero h1 { font-size: 2.5rem; }
+            section { padding: 60px 5%; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Música de fondo (Reemplaza 'musica.mp3' con tu archivo) -->
+    <audio id="bgMusic" loop>
+        <source src="musica.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="music-player">
+        <span>🎵 Música</span>
+        <button class="btn-contact" onclick="toggleMusic()" id="musicBtn">Play</button>
+    </div>
+
+    <nav>
+        <div class="logo-nav">CHESED</div>
+        <ul class="nav-links">
+            <li><a href="#inicio">Inicio</a></li>
+            <li><a href="#historia">Historia</a></li>
+            <li><a href="#generaciones">Generaciones</a></li>
+            <li><a href="#eventos">Eventos</a></li>
+            <li><a href="#triunfos">Triunfos</a></li>
+            <li><a href="#museo">Museo</a></li>
+        </ul>
+        <button class="btn-contact" onclick="location.href='#redes'">SÍGUENOS</button>
+    </nav>
+
+    <header class="hero" id="inicio">
+        <div class="hero-content">
+            <!-- Reemplaza con la imagen de tu logo grande -->
+            <img src="https://i.ibb.co/L8p598B/logo-chesed.png" alt="Logo Chesed" class="hero-logo">
+            <h1>CLUB CHESED</h1>
+            <p>"AMOR CONSTANTE" - DESDE 1998</p>
+        </div>
+    </header>
+
+    <section id="historia">
+        <h2 class="section-title">Nuestra Historia</h2>
+        <div style="background: var(--glass); padding: 40px; border-radius: 20px;">
+            <p style="line-height: 1.8; font-size: 1.1rem;">
+                El Club de Conquiguías Chesed nació con la visión de formar líderes con valores... 
+                (Aquí puedes escribir toda la historia de tu club).
+            </p>
+        </div>
+    </section>
+
+    <section id="generaciones">
+        <h2 class="section-title">Generaciones (Galería 1920x1080)</h2>
+        <div class="generations-grid">
+            <!-- Tarjeta de Foto 1 -->
+            <div class="photo-card">
+                <img src="https://via.placeholder.com/1920x1080" alt="Generacion 1">
+                <div class="photo-info">
+                    <h3>Generación 2023</h3>
+                    <p>Campamento Nacional de Guías</p>
+                </div>
+            </div>
+            <!-- Tarjeta de Foto 2 -->
+            <div class="photo-card">
+                <img src="https://via.placeholder.com/1920x1080" alt="Generacion 2">
+                <div class="photo-info">
+                    <h3>Generación 2022</h3>
+                    <p>Investidura Regional</p>
+                </div>
+            </div>
+            <!-- Agrega más tarjetas aquí -->
+        </div>
+    </section>
+
+    <section id="eventos" style="background: rgba(0,0,0,0.2);">
+        <h2 class="section-title">Eventos & Triunfos</h2>
+        <div class="generations-grid">
+            <div class="photo-card">
+                <img src="https://via.placeholder.com/1920x1080" alt="Triunfo 1">
+                <div class="photo-info"><h3>Primer Lugar Marcha</h3></div>
+            </div>
+            <div class="photo-card">
+                <img src="https://via.placeholder.com/1920x1080" alt="Triunfo 2">
+                <div class="photo-info"><h3>Camporee de Oro</h3></div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="redes" style="text-align: center; padding: 50px; background: #050a18;">
+        <h2 style="color: var(--gold);">CLUB CHESED 1998</h2>
+        <p style="margin: 20px 0;">Síguenos en nuestras redes sociales</p>
+        <div style="display: flex; justify-content: center; gap: 20px;">
+            <a href="#" class="btn-contact">Facebook</a>
+            <a href="#" class="btn-contact">Instagram</a>
+            <a href="#" class="btn-contact">YouTube</a>
+        </div>
+        <p style="margin-top: 40px; font-size: 0.8rem; opacity: 0.5;">© 2024 Club Chesed - Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        // Función para la música
+        const music = document.getElementById('bgMusic');
+        const btn = document.getElementById('musicBtn');
+
+        function toggleMusic() {
+            if (music.paused) {
+                music.play();
+                btn.innerText = "Pause";
+                btn.style.background = "red";
+            } else {
+                music.pause();
+                btn.innerText = "Play";
+                btn.style.background = "linear-gradient(90deg, #00c6ff, #0072ff)";
+            }
+        }
+
+        // Animación de entrada al hacer scroll
+        const observerOptions = { threshold: 0.1 };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = "1";
+                    entry.target.style.transform = "translateY(0)";
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section').forEach(section => {
+            section.style.opacity = "0";
+            section.style.transform = "translateY(50px)";
+            section.style.transition = "all 0.8s ease-out";
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
