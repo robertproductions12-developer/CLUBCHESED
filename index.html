@@ -3,17 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Club de Conquiguías Chesed | Oficial</title>
-    <!-- Fuentes de Google -->
+    <title>Club de Conquiguías Chesed | Galería Profesional</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-blue: #0a1128;
+            --primary-blue: #050a18;
             --accent-blue: #007bff;
             --gold: #d4af37;
-            --text-light: #f4f4f4;
-            --glass: rgba(255, 255, 255, 0.05);
-            --transition: all 0.3s ease;
+            --text-light: #ffffff;
+            --glass: rgba(255, 255, 255, 0.03);
+            --transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         * {
@@ -30,310 +29,344 @@
             scroll-behavior: smooth;
         }
 
-        /* --- FONDO ANIMADO --- */
-        body::before {
-            content: "";
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at top right, #1a2a6c, #0a1128);
-            z-index: -1;
-        }
-
-        /* --- NAVEGACIÓN --- */
+        /* --- NAVEGACIÓN ESTILO BRANDMODE --- */
         nav {
             position: fixed;
             top: 0;
             width: 100%;
-            padding: 20px 5%;
+            padding: 25px 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(10, 17, 40, 0.8);
+            background: linear-gradient(to bottom, rgba(5,10,24,0.9), transparent);
             backdrop-filter: blur(10px);
             z-index: 1000;
-            border-bottom: 1px solid var(--glass);
         }
 
         .logo-nav {
             font-weight: 900;
-            font-size: 1.5rem;
-            letter-spacing: 2px;
+            font-size: 1.4rem;
+            letter-spacing: 3px;
             color: var(--gold);
+            text-transform: uppercase;
         }
 
         .nav-links {
             display: flex;
-            gap: 25px;
+            gap: 30px;
             list-style: none;
         }
 
         .nav-links a {
             text-decoration: none;
-            color: var(--text-light);
-            font-size: 0.9rem;
+            color: rgba(255,255,255,0.7);
+            font-size: 0.8rem;
+            font-weight: 600;
             text-transform: uppercase;
+            letter-spacing: 1px;
             transition: var(--transition);
         }
 
-        .nav-links a:hover {
-            color: var(--accent-blue);
-        }
+        .nav-links a:hover { color: var(--accent-blue); }
 
-        /* BOTÓN ESTILO BRANDMODE */
-        .btn-contact {
+        .btn-main {
             background: linear-gradient(90deg, #00c6ff, #0072ff);
-            padding: 10px 25px;
+            padding: 12px 30px;
             border-radius: 50px;
             color: white;
-            font-weight: bold;
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 800;
             border: none;
             cursor: pointer;
-            transition: transform 0.3s ease;
+            transition: var(--transition);
+            box-shadow: 0 10px 20px rgba(0, 114, 255, 0.2);
         }
 
-        .btn-contact:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(0, 114, 255, 0.5);
+        .btn-main:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0, 114, 255, 0.4);
         }
 
-        /* --- HERO SECTION --- */
+        /* --- HERO FULL SCREEN --- */
         .hero {
             height: 100vh;
+            width: 100%;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 0 20px;
-            background: url('https://via.placeholder.com/1920x1080') no-repeat center center/cover;
+            background: url('tu-fondo-hero.jpg') no-repeat center center/cover;
             position: relative;
+            overflow: hidden;
         }
 
+        /* Overlay oscuro para que el logo resalte */
         .hero::after {
             content: "";
             position: absolute;
             inset: 0;
-            background: rgba(10, 17, 40, 0.7);
+            background: radial-gradient(circle, rgba(5,10,24,0.2) 0%, rgba(5,10,24,0.9) 100%);
         }
 
         .hero-content {
             z-index: 10;
+            padding: 20px;
         }
 
         .hero-logo {
-            width: 300px;
-            max-width: 80%;
-            margin-bottom: 20px;
-            filter: drop-shadow(0 0 20px var(--gold));
-            animation: float 4s ease-in-out infinite;
+            width: 450px;
+            max-width: 90%;
+            filter: drop-shadow(0 0 30px rgba(212, 175, 55, 0.4));
+            animation: fadeInScale 1.5s ease-out;
         }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
         }
 
         .hero h1 {
-            font-size: 4rem;
+            font-size: clamp(2rem, 8vw, 5rem);
             font-weight: 900;
+            margin-top: 20px;
+            letter-spacing: -2px;
+        }
+
+        /* --- GALERÍA CINEMATOGRÁFICA --- */
+        .full-gallery {
+            padding: 0;
+            width: 100%;
+        }
+
+        .gallery-item {
+            position: relative;
+            width: 100%;
+            height: 80vh; /* Casi toda la pantalla */
+            margin-bottom: 10px;
+            overflow: hidden;
+            display: flex;
+            align-items: flex-end;
+            border-bottom: 2px solid var(--glass);
+        }
+
+        .gallery-item img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Mantiene la proporción 1920x1080 */
+            transition: transform 2s ease;
+            z-index: 1;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .item-info {
+            position: relative;
+            z-index: 2;
+            padding: 60px 5%;
+            width: 100%;
+            background: linear-gradient(to top, rgba(5,10,24,0.9) 0%, transparent 100%);
+        }
+
+        .item-info h3 {
+            font-size: 2.5rem;
+            color: var(--gold);
             margin-bottom: 10px;
             text-transform: uppercase;
         }
 
-        .hero p {
-            font-size: 1.2rem;
-            color: var(--gold);
-            letter-spacing: 5px;
-        }
-
-        /* --- SECCIONES GENERALES --- */
-        section {
-            padding: 100px 10%;
-        }
-
-        .section-title {
-            font-size: 2.5rem;
-            margin-bottom: 50px;
-            border-left: 5px solid var(--accent-blue);
-            padding-left: 20px;
-        }
-
-        /* --- GALERÍA 1920x1080 --- */
-        .generations-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
-
-        .photo-card {
-            position: relative;
-            width: 100%;
-            aspect-ratio: 1920 / 1080; /* Mantiene la proporción exacta */
-            background: var(--glass);
-            border-radius: 15px;
-            overflow: hidden;
-            border: 1px solid var(--glass);
-            transition: var(--transition);
-        }
-
-        .photo-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--accent-blue);
-        }
-
-        .photo-card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .photo-info {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            padding: 20px;
-            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+        .item-info p {
+            font-size: 1.1rem;
+            max-width: 600px;
+            color: rgba(255,255,255,0.8);
+            line-height: 1.6;
         }
 
         /* --- MUSICA --- */
-        .music-player {
+        .music-toggle {
             position: fixed;
-            bottom: 30px;
-            right: 30px;
+            bottom: 40px;
+            right: 40px;
             z-index: 2000;
             background: var(--glass);
-            backdrop-filter: blur(10px);
-            padding: 15px;
-            border-radius: 50px;
+            backdrop-filter: blur(15px);
             border: 1px solid var(--gold);
+            padding: 15px 25px;
+            border-radius: 100px;
+            cursor: pointer;
             display: flex;
             align-items: center;
             gap: 10px;
+            color: white;
+            font-weight: bold;
+            transition: var(--transition);
         }
 
         /* --- RESPONSIVE --- */
         @media (max-width: 768px) {
             .nav-links { display: none; }
-            .hero h1 { font-size: 2.5rem; }
-            section { padding: 60px 5%; }
+            .gallery-item { height: 60vh; }
+            .item-info h3 { font-size: 1.8rem; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Música de fondo (Reemplaza 'musica.mp3' con tu archivo) -->
     <audio id="bgMusic" loop>
-        <source src="musica.mp3" type="audio/mpeg">
+        <source src="tu-musica.mp3" type="audio/mpeg">
     </audio>
 
-    <div class="music-player">
-        <span>🎵 Música</span>
-        <button class="btn-contact" onclick="toggleMusic()" id="musicBtn">Play</button>
+    <div class="music-toggle" onclick="toggleMusic()" id="musicBtn">
+        <span>🎵 MÚSICA DE FONDO</span>
+        <small id="status">OFF</small>
     </div>
 
     <nav>
-        <div class="logo-nav">CHESED</div>
+        <div class="logo-nav">Club Chesed</div>
         <ul class="nav-links">
             <li><a href="#inicio">Inicio</a></li>
-            <li><a href="#historia">Historia</a></li>
-            <li><a href="#generaciones">Generaciones</a></li>
-            <li><a href="#eventos">Eventos</a></li>
-            <li><a href="#triunfos">Triunfos</a></li>
+            <li><a href="#galeria">Generaciones</a></li>
             <li><a href="#museo">Museo</a></li>
         </ul>
-        <button class="btn-contact" onclick="location.href='#redes'">SÍGUENOS</button>
+        <a href="#redes" class="btn-main">CONTACTO</a>
     </nav>
 
     <header class="hero" id="inicio">
         <div class="hero-content">
-            <!-- Reemplaza con la imagen de tu logo grande -->
+            <!-- AQUÍ VA TU LOGO GRANDE -->
             <img src="sii.png" alt="Logo Chesed" class="hero-logo">
-            <h1>CLUB CHESED</h1>
-            <p>"AMOR CONSTANTE" - DESDE 1998</p>
+            <h1>AMOR CONSTANTE</h1>
+            <p style="color: var(--gold); letter-spacing: 5px;">EST. 1998</p>
         </div>
     </header>
 
-    <section id="historia">
-        <h2 class="section-title">Nuestra Historia</h2>
-        <div style="background: var(--glass); padding: 40px; border-radius: 20px;">
-            <p style="line-height: 1.8; font-size: 1.1rem;">
-                El Club de Conquiguías Chesed nació con la visión de formar líderes con valores... 
-                (Aquí puedes escribir toda la historia de tu club).
-            </p>
+    <main class="full-gallery" id="galeria">
+        
+        <!-- FOTO 1 -->
+        <div class="gallery-item">
+            <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=80" alt="Generacion 1">
+            <div class="item-info">
+                <h3>Generación Fundadora</h3>
+                <p>El inicio de una historia basada en el amor y el servicio a Dios.</p>
+            </div>
         </div>
-    </section>
 
-    <section id="generaciones">
-        <h2 class="section-title">Generaciones (Galería 1920x1080)</h2>
-        <div class="generations-grid">
-            <!-- Tarjeta de Foto 1 -->
-            <div class="photo-card">
-                <img src="https://via.placeholder.com/1920x1080" alt="Generacion 1">
-                <div class="photo-info">
-                    <h3>Generación 2023</h3>
-                    <p>Campamento Nacional de Guías</p>
-                </div>
+        <!-- FOTO 2 -->
+        <div class="gallery-item">
+            <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1920&q=80" alt="Foto 2">
+            <div class="item-info">
+                <h3>Camporee Regional 2005</h3>
+                <p>Momentos de triunfo y hermandad en las montañas.</p>
             </div>
-            <!-- Tarjeta de Foto 2 -->
-            <div class="photo-card">
-                <img src="https://via.placeholder.com/1920x1080" alt="Generacion 2">
-                <div class="photo-info">
-                    <h3>Generación 2022</h3>
-                    <p>Investidura Regional</p>
-                </div>
-            </div>
-            <!-- Agrega más tarjetas aquí -->
         </div>
-    </section>
 
-    <section id="eventos" style="background: rgba(0,0,0,0.2);">
-        <h2 class="section-title">Eventos & Triunfos</h2>
-        <div class="generations-grid">
-            <div class="photo-card">
-                <img src="https://via.placeholder.com/1920x1080" alt="Triunfo 1">
-                <div class="photo-info"><h3>Primer Lugar Marcha</h3></div>
-            </div>
-            <div class="photo-card">
-                <img src="https://via.placeholder.com/1920x1080" alt="Triunfo 2">
-                <div class="photo-info"><h3>Camporee de Oro</h3></div>
+        <!-- FOTO 3 -->
+        <div class="gallery-item">
+            <img src="https://via.placeholder.com/1920x1080/050a18/gold?text=FOTO+3" alt="Foto 3">
+            <div class="item-info">
+                <h3>Investidura Anual</h3>
+                <p>Nuevos guías mayores comprometidos con la misión.</p>
             </div>
         </div>
-    </section>
 
-    <footer id="redes" style="text-align: center; padding: 50px; background: #050a18;">
-        <h2 style="color: var(--gold);">CLUB CHESED 1998</h2>
-        <p style="margin: 20px 0;">Síguenos en nuestras redes sociales</p>
-        <div style="display: flex; justify-content: center; gap: 20px;">
-            <a href="#" class="btn-contact">Facebook</a>
-            <a href="#" class="btn-contact">Instagram</a>
-            <a href="#" class="btn-contact">YouTube</a>
+        <!-- FOTO 4 -->
+        <div class="gallery-item">
+            <img src="https://via.placeholder.com/1920x1080/050a18/gold?text=FOTO+4" alt="Foto 4">
+            <div class="item-info">
+                <h3>Proyectos Comunitarios</h3>
+                <p>Llevando esperanza a los lugares más necesitados.</p>
+            </div>
         </div>
-        <p style="margin-top: 40px; font-size: 0.8rem; opacity: 0.5;">© 2024 Club Chesed - Todos los derechos reservados.</p>
+
+        <!-- FOTO 5 -->
+        <div class="gallery-item">
+            <img src="https://via.placeholder.com/1920x1080/050a18/gold?text=FOTO+5" alt="Foto 5">
+            <div class="item-info">
+                <h3>Marcha de Honor</h3>
+                <p>Disciplina y excelencia en cada paso que damos.</p>
+            </div>
+        </div>
+
+        <!-- FOTO 6 -->
+        <div class="gallery-item">
+            <img src="https://via.placeholder.com/1920x1080/050a18/gold?text=FOTO+6" alt="Foto 6">
+            <div class="item-info">
+                <h3>Generación 2015</h3>
+                <p>Un año de crecimiento espiritual inolvidable.</p>
+            </div>
+        </div>
+
+        <!-- FOTO 7 -->
+        <div class="gallery-item">
+            <img src="https://via.placeholder.com/1920x1080/050a18/gold?text=FOTO+7" alt="Foto 7">
+            <div class="item-info">
+                <h3>Eventos Deportivos</h3>
+                <p>Mente sana en cuerpo sano para la gloria de Dios.</p>
+            </div>
+        </div>
+
+        <!-- FOTO 8 -->
+        <div class="gallery-item">
+            <img src="https://via.placeholder.com/1920x1080/050a18/gold?text=FOTO+8" alt="Foto 8">
+            <div class="item-info">
+                <h3>Noches de Fogata</h3>
+                <p>Donde los lazos de amistad se vuelven eternos.</p>
+            </div>
+        </div>
+
+        <!-- FOTO 9 -->
+        <div class="gallery-item">
+            <img src="https://via.placeholder.com/1920x1080/050a18/gold?text=FOTO+9" alt="Foto 9">
+            <div class="item-info">
+                <h3>El Museo Chesed</h3>
+                <p>Recuerdos que guardamos con el corazón.</p>
+            </div>
+        </div>
+
+        <!-- FOTO 10 -->
+        <div class="gallery-item">
+            <img src="https://via.placeholder.com/1920x1080/050a18/gold?text=FOTO+10" alt="Foto 10">
+            <div class="item-info">
+                <h3>Generación Actual</h3>
+                <p>Seguimos escribiendo la historia con fe y valor.</p>
+            </div>
+        </div>
+
+    </main>
+
+    <footer id="redes" style="padding: 100px 5%; text-align: center; background: #030712;">
+        <img src="sii.png" style="width: 80px; margin-bottom: 20px;" alt="">
+        <h2 style="font-size: 2rem; margin-bottom: 30px;">ÚNETE A NUESTRA RED</h2>
+        <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+            <a href="#" class="btn-main">INSTAGRAM</a>
+            <a href="#" class="btn-main">FACEBOOK</a>
+            <a href="#" class="btn-main">YOUTUBE</a>
+        </div>
+        <p style="margin-top: 60px; opacity: 0.4; font-size: 0.7rem;">© 2024 CLUB DE CONQUIGUÍAS CHESED. DISEÑO PROFESIONAL.</p>
     </footer>
 
     <script>
-        // Función para la música
-        const music = document.getElementById('bgMusic');
-        const btn = document.getElementById('musicBtn');
-
         function toggleMusic() {
+            const music = document.getElementById('bgMusic');
+            const status = document.getElementById('status');
             if (music.paused) {
                 music.play();
-                btn.innerText = "Pause";
-                btn.style.background = "red";
+                status.innerText = "ON";
+                status.style.color = "#00ff00";
             } else {
                 music.pause();
-                btn.innerText = "Play";
-                btn.style.background = "linear-gradient(90deg, #00c6ff, #0072ff)";
+                status.innerText = "OFF";
+                status.style.color = "white";
             }
         }
 
-        // Animación de entrada al hacer scroll
-        const observerOptions = { threshold: 0.1 };
+        // Efecto de aparición suave al hacer scroll
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -341,13 +374,13 @@
                     entry.target.style.transform = "translateY(0)";
                 }
             });
-        }, observerOptions);
+        }, { threshold: 0.1 });
 
-        document.querySelectorAll('section').forEach(section => {
-            section.style.opacity = "0";
-            section.style.transform = "translateY(50px)";
-            section.style.transition = "all 0.8s ease-out";
-            observer.observe(section);
+        document.querySelectorAll('.gallery-item').forEach(item => {
+            item.style.opacity = "0";
+            item.style.transform = "translateY(50px)";
+            item.style.transition = "all 1s ease-out";
+            observer.observe(item);
         });
     </script>
 </body>
