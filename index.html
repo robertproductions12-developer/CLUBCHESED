@@ -1,443 +1,190 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Club de Conquiguías Chesed</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
-    <!-- Iconos para redes sociales -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        :root {
-            --primary-blue: #050a18;
-            --accent-blue: #007bff;
-            --gold: #d4af37;
-            --text-light: #ffffff;
-            --glass: rgba(255, 255, 255, 0.03);
-            --transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        }
+<audio id="bgMusic" loop>
+    <source src="musi.mp3" type="audio/mpeg">
+</audio>
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
-        }
+<div class="music-toggle" onclick="toggleMusic()" id="musicBtn">
+    <span>🎵 MÚSICA</span>
+    <small id="status">OFF</small>
+</div>
 
-        body {
-            background-color: var(--primary-blue);
-            color: var(--text-light);
-            overflow-x: hidden;
-            scroll-behavior: smooth;
-        }
+<nav>
+    <div class="logo-nav" onclick="filterGallery('all')">Club Chesed</div>
+    <ul class="nav-links">
+        <li><a onclick="filterGallery('all')">Inicio</a></li>
+        <li><a onclick="filterGallery('generaciones')">Generaciones</a></li>
+        <li><a onclick="filterGallery('miembros')">Miembros</a></li>
+        <li><a onclick="filterGallery('campamentos')">Campamentos</a></li>
+    </ul>
+    <a href="#redes" class="btn-main"><i class="fas fa-heart"></i> SÍGUENOS</a>
+</nav>
 
-        /* --- NAVEGACIÓN --- */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            padding: 20px 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: linear-gradient(to bottom, rgba(5,10,24,0.95), rgba(5,10,24,0.7));
-            backdrop-filter: blur(15px);
-            z-index: 1000;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
+<!-- HEADER -->
+<header class="hero" id="inicio">
+    <video autoplay muted loop playsinline class="hero-video">
+        <source src="intro.mp4" type="video/mp4">
+    </video>
+</header>
 
-        .logo-nav {
-            font-weight: 900;
-            font-size: 1.2rem;
-            letter-spacing: 3px;
-            color: var(--gold);
-            text-transform: uppercase;
-            cursor: pointer;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 25px;
-            list-style: none;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: rgba(255,255,255,0.7);
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            transition: var(--transition);
-            cursor: pointer;
-        }
-
-        .nav-links a:hover, .nav-links a.active {
-            color: var(--gold);
-        }
-
-        .btn-main {
-            background: linear-gradient(90deg, #00c6ff, #0072ff);
-            padding: 10px 25px;
-            border-radius: 50px;
-            color: white;
-            text-decoration: none;
-            font-size: 0.7rem;
-            font-weight: 800;
-            border: none;
-            cursor: pointer;
-            transition: var(--transition);
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-main:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0,114,255,0.3);
-        }
-
-        /* --- VIDEO HEADER --- */
-        .hero {
-            position: relative;
-            width: 100%;
-            aspect-ratio: 16 / 9; 
-            margin-top: 60px;
-            overflow: hidden;
-            background-color: black;
-        }
-
-        .hero-video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        /* --- GALERÍA --- */
-        .full-gallery {
-            padding: 0;
-            width: 100%;
-            min-height: 400px;
-        }
-
-        .gallery-item {
-            position: relative;
-            width: 100%;
-            aspect-ratio: 16 / 9; 
-            margin-bottom: 5px;
-            overflow: hidden;
-            display: flex;
-            align-items: flex-end;
-            border-bottom: 1px solid var(--glass);
-            transition: all 0.5s ease;
-        }
-
-        /* Clase para ocultar elementos filtrados */
-        .gallery-item.hidden {
-            display: none;
-        }
-
-        .gallery-item img {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 2s ease;
-        }
-
-        .gallery-item:hover img {
-            transform: scale(1.05);
-        }
-
-        .item-info {
-            position: relative;
-            z-index: 2;
-            padding: 40px 5%;
-            width: 100%;
-            background: linear-gradient(to top, rgba(5,10,24,0.95) 0%, transparent 100%);
-        }
-
-        .category-tag {
-            color: var(--accent-blue);
-            font-size: 0.7rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            margin-bottom: 10px;
-            display: block;
-            letter-spacing: 2px;
-        }
-
-        .item-info h3 {
-            font-size: clamp(1.2rem, 5vw, 2.5rem);
-            color: var(--gold);
-            text-transform: uppercase;
-            margin-bottom: 10px;
-        }
-
-        .item-info p {
-            font-size: clamp(0.8rem, 3vw, 1.1rem);
-            max-width: 600px;
-            color: rgba(255,255,255,0.8);
-            line-height: 1.6;
-        }
-
-        /* --- REDES SOCIALES (FOOTER) --- */
-        .social-container {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-            margin: 30px 0;
-        }
-
-        .social-btn {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--glass);
-            color: white;
-            text-decoration: none;
-            font-size: 1.2rem;
-            border: 1px solid rgba(255,255,255,0.1);
-            transition: var(--transition);
-        }
-
-        .social-btn:hover {
-            background: var(--gold);
-            color: var(--primary-blue);
-            transform: translateY(-5px);
-        }
-
-        .social-btn.ig:hover { background: #E1306C; color: white; }
-        .social-btn.tk:hover { background: #000000; color: white; }
-        .social-btn.yt:hover { background: #FF0000; color: white; }
-
-        /* --- MUSICA --- */
-        .music-toggle {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 2000;
-            background: rgba(5,10,24,0.8);
-            backdrop-filter: blur(15px);
-            border: 1px solid var(--gold);
-            padding: 10px 20px;
-            border-radius: 100px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: white;
-            font-size: 0.8rem;
-        }
-
-        @media (max-width: 768px) {
-            .nav-links { display: none; }
-            .hero { margin-top: 60px; }
-            .item-info { padding: 20px 5%; }
-        }
-
-        @media (min-width: 1200px) {
-            .hero { height: 100vh; margin-top: 0; }
-        }
-    </style>
-</head>
-<body>
-
-    <audio id="bgMusic" loop>
-        <source src="musi.mp3" type="audio/mpeg">
-    </audio>
-
-    <div class="music-toggle" onclick="toggleMusic()" id="musicBtn">
-        <span>🎵 MÚSICA</span>
-        <small id="status">OFF</small>
+<!-- GALERÍA FILTRABLE -->
+<main class="full-gallery" id="galeria">
+    
+    <!-- CATEGORÍA: GENERACIONES -->
+    <div class="gallery-item" data-category="generaciones">
+        <img src="sii.png" alt="Generacion">
+        <div class="item-info">
+            <span class="category-tag">Generaciones</span>
+            <h3>Legado Chesed</h3>
+            <p>Nuestra historia contada a través de los años y las vidas transformadas.</p>
+        </div>
     </div>
 
-    <nav>
-        <div class="logo-nav" onclick="filterGallery('all')">Club Chesed</div>
-        <ul class="nav-links">
-            <li><a onclick="filterGallery('all')">Inicio</a></li>
-            <li><a onclick="filterGallery('generaciones')">Generaciones</a></li>
-            <li><a onclick="filterGallery('miembros')">Miembros</a></li>
-            <li><a onclick="filterGallery('campamentos')">Campamentos</a></li>
-        </ul>
-        <a href="#redes" class="btn-main"><i class="fas fa-heart"></i> SÍGUENOS</a>
-    </nav>
+    <!-- CATEGORÍA: CAMPAMENTOS -->
+    <div class="gallery-item" data-category="campamentos">
+        <img src="mini.png" alt="Campamento">
+        <div class="item-info">
+            <span class="category-tag">Campamentos</span>
+            <h3>Camatagua 2025</h3>
+            <p>Donde la naturaleza se encuentra con la fe. Una experiencia inolvidable.</p>
+        </div>
+    </div>
 
-    <!-- HEADER -->
-    <header class="hero" id="inicio">
-        <video autoplay muted loop playsinline class="hero-video">
-            <source src="intro.mp4" type="video/mp4">
-        </video>
-    </header>
+    <div class="gallery-item" data-category="campamentos">
+        <img src="mini.png" alt="Campamento">
+        <div class="item-info">
+            <span class="category-tag">Campamentos</span>
+            <h3>Camatagua 2025</h3>
+            <p>Donde la naturaleza se encuentra con la fe. Una experiencia inolvidable.</p>
+        </div>
+    </div>
 
-    <!-- GALERÍA FILTRABLE -->
-    <main class="full-gallery" id="galeria">
+    <!-- CATEGORÍA: MIEMBROS -->
+    <div class="gallery-item" data-category="miembros">
+        <img src="miller.jpg" alt="Miembros">
+        <div class="item-info">
+            <span class="category-tag">Miembros</span>
+            <h3>Líderes del Mañana</h3>
+            <p>Juventud comprometida con el servicio y la excelencia espiritual.</p>
+        </div>
+    </div>
+
+    <!-- CATEGORÍA: GENERACIONES -->
+    <div class="gallery-item" data-category="generaciones">
+        <img src="https://via.placeholder.com/1920x1080/050a18/gold?text=GENERACION+2" alt="Foto">
+        <div class="item-info">
+            <span class="category-tag">Generaciones</span>
+            <h3>Clase de Guías Mayores</h3>
+            <p>Preparados para servir en cualquier lugar donde Dios nos llame.</p>
+        </div>
+    </div>
+
+    <!-- CATEGORÍA: CAMPAMENTOS -->
+    <div class="gallery-item" data-category="campamentos">
+        <img src="https://via.placeholder.com/1920x1080/050a18/007bff?text=CAMPAMENTO+2" alt="Foto">
+        <div class="item-info">
+            <span class="category-tag">Campamentos</span>
+            <h3>Noches de Fogata</h3>
+            <p>Momentos de reflexión y hermandad bajo las estrellas.</p>
+        </div>
+    </div>
+
+</main>
+
+<!-- PIE DE PÁGINA Y REDES -->
+<footer id="redes" style="padding: 80px 5% 40px; text-align: center; background: #030712;">
+    <img src="sii.png" style="width: 80px; margin-bottom: 20px; filter: grayscale(0.5);" alt="Logo">
+    <h2 style="color: var(--gold); letter-spacing: 4px; font-size: 1rem; margin-bottom: 10px;">CONÉCTATE CON NOSOTROS</h2>
+    
+    <div class="social-container">
+        <a href="https://instagram.com/tu_usuario" target="_blank" class="social-btn ig" title="Instagram">
+            <i class="fab fa-instagram"></i>
+        </a>
+        <a href="https://tiktok.com/@tu_usuario" target="_blank" class="social-btn tk" title="TikTok">
+            <i class="fab fa-tiktok"></i>
+        </a>
+        <a href="https://youtube.com/@tu_canal" target="_blank" class="social-btn yt" title="YouTube">
+            <i class="fab fa-youtube"></i>
+        </a>
+    </div>
+
+    <p style="margin-top: 40px; opacity: 0.4; font-size: 0.7rem; letter-spacing: 1px;">
+        © 2026 CLUB DE CONQUIGUÍAS CHESED. <br>
         
-        <!-- CATEGORÍA: GENERACIONES -->
-        <div class="gallery-item" data-category="generaciones">
-            <img src="sii.png" alt="Generacion">
-            <div class="item-info">
-                <span class="category-tag">Generaciones</span>
-                <h3>Legado Chesed</h3>
-                <p>Nuestra historia contada a través de los años y las vidas transformadas.</p>
-            </div>
-        </div>
+    </p>
+</footer>
 
-        <!-- CATEGORÍA: CAMPAMENTOS -->
-        <div class="gallery-item" data-category="campamentos">
-            <img src="mini.png" alt="Campamento">
-            <div class="item-info">
-                <span class="category-tag">Campamentos</span>
-                <h3>Camatagua 2025</h3>
-                <p>Donde la naturaleza se encuentra con la fe. Una experiencia inolvidable.</p>
-            </div>
-        </div>
+<script>
+    // FUNCIÓN DE FILTRADO
+    function filterGallery(category) {
+        const items = document.querySelectorAll('.gallery-item');
+        const links = document.querySelectorAll('.nav-links a');
 
-        <div class="gallery-item" data-category="campamentos">
-            <img src="mini.png" alt="Campamento">
-            <div class="item-info">
-                <span class="category-tag">Campamentos</span>
-                <h3>Camatagua 2025</h3>
-                <p>Donde la naturaleza se encuentra con la fe. Una experiencia inolvidable.</p>
-            </div>
-        </div>
-
-        <!-- CATEGORÍA: MIEMBROS -->
-        <div class="gallery-item" data-category="miembros">
-            <img src="miller.jpg" alt="Miembros">
-            <div class="item-info">
-                <span class="category-tag">Miembros</span>
-                <h3>Líderes del Mañana</h3>
-                <p>Juventud comprometida con el servicio y la excelencia espiritual.</p>
-            </div>
-        </div>
-
-        <!-- CATEGORÍA: GENERACIONES -->
-        <div class="gallery-item" data-category="generaciones">
-            <img src="https://via.placeholder.com/1920x1080/050a18/gold?text=GENERACION+2" alt="Foto">
-            <div class="item-info">
-                <span class="category-tag">Generaciones</span>
-                <h3>Clase de Guías Mayores</h3>
-                <p>Preparados para servir en cualquier lugar donde Dios nos llame.</p>
-            </div>
-        </div>
-
-        <!-- CATEGORÍA: CAMPAMENTOS -->
-        <div class="gallery-item" data-category="campamentos">
-            <img src="https://via.placeholder.com/1920x1080/050a18/007bff?text=CAMPAMENTO+2" alt="Foto">
-            <div class="item-info">
-                <span class="category-tag">Campamentos</span>
-                <h3>Noches de Fogata</h3>
-                <p>Momentos de reflexión y hermandad bajo las estrellas.</p>
-            </div>
-        </div>
-
-    </main>
-
-    <!-- PIE DE PÁGINA Y REDES -->
-    <footer id="redes" style="padding: 80px 5% 40px; text-align: center; background: #030712;">
-        <img src="sii.png" style="width: 80px; margin-bottom: 20px; filter: grayscale(0.5);" alt="Logo">
-        <h2 style="color: var(--gold); letter-spacing: 4px; font-size: 1rem; margin-bottom: 10px;">CONÉCTATE CON NOSOTROS</h2>
-        
-        <div class="social-container">
-            <a href="https://instagram.com/tu_usuario" target="_blank" class="social-btn ig" title="Instagram">
-                <i class="fab fa-instagram"></i>
-            </a>
-            <a href="https://tiktok.com/@tu_usuario" target="_blank" class="social-btn tk" title="TikTok">
-                <i class="fab fa-tiktok"></i>
-            </a>
-            <a href="https://youtube.com/@tu_canal" target="_blank" class="social-btn yt" title="YouTube">
-                <i class="fab fa-youtube"></i>
-            </a>
-        </div>
-
-        <p style="margin-top: 40px; opacity: 0.4; font-size: 0.7rem; letter-spacing: 1px;">
-            © 2026 CLUB DE CONQUIGUÍAS CHESED. <br>
-            
-        </p>
-    </footer>
-
-    <script>
-        // FUNCIÓN DE FILTRADO
-        function filterGallery(category) {
-            const items = document.querySelectorAll('.gallery-item');
-            const links = document.querySelectorAll('.nav-links a');
-
-            // Actualizar estado activo en el menú
-            links.forEach(link => {
-                link.classList.remove('active');
-                if(link.innerText.toLowerCase() === category.toLowerCase()) {
-                    link.classList.add('active');
-                }
-            });
-
-            items.forEach(item => {
-                // Si es 'all' (inicio), mostrar todo
-                if (category === 'all') {
-                    item.classList.remove('hidden');
-                    item.style.opacity = "1";
-                    item.style.transform = "translateY(0)";
-                } else {
-                    // Si coincide con la categoría, mostrar, sino ocultar
-                    if (item.getAttribute('data-category') === category) {
-                        item.classList.remove('hidden');
-                        setTimeout(() => {
-                            item.style.opacity = "1";
-                            item.style.transform = "translateY(0)";
-                        }, 10);
-                    } else {
-                        item.classList.add('hidden');
-                        item.style.opacity = "0";
-                        item.style.transform = "translateY(20px)";
-                    }
-                }
-            });
-
-            // Scroll suave a la galería al filtrar
-            if(category !== 'all') {
-                document.getElementById('galeria').scrollIntoView({ behavior: 'smooth' });
-            } else {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+        // Actualizar estado activo en el menú
+        links.forEach(link => {
+            link.classList.remove('active');
+            if(link.innerText.toLowerCase() === category.toLowerCase()) {
+                link.classList.add('active');
             }
-        }
-
-        // CONTROL DE MÚSICA
-        function toggleMusic() {
-            const music = document.getElementById('bgMusic');
-            const status = document.getElementById('status');
-            if (music.paused) {
-                music.play();
-                status.innerText = "ON";
-                status.style.color = "#00ff00";
-            } else {
-                music.pause();
-                status.innerText = "OFF";
-                status.style.color = "white";
-            }
-        }
-
-        // EFECTO DE APARICIÓN AL HACER SCROLL
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = "1";
-                    entry.target.style.transform = "translateY(0)";
-                }
-            });
-        }, { threshold: 0.1 });
-
-        document.querySelectorAll('.gallery-item').forEach(item => {
-            item.style.opacity = "0";
-            item.style.transform = "translateY(30px)";
-            item.style.transition = "all 0.8s ease-out";
-            observer.observe(item);
         });
-    </script>
-</body>
-</html>
+
+        items.forEach(item => {
+            // Si es 'all' (inicio), mostrar todo
+            if (category === 'all') {
+                item.classList.remove('hidden');
+                item.style.opacity = "1";
+                item.style.transform = "translateY(0)";
+            } else {
+                // Si coincide con la categoría, mostrar, sino ocultar
+                if (item.getAttribute('data-category') === category) {
+                    item.classList.remove('hidden');
+                    setTimeout(() => {
+                        item.style.opacity = "1";
+                        item.style.transform = "translateY(0)";
+                    }, 10);
+                } else {
+                    item.classList.add('hidden');
+                    item.style.opacity = "0";
+                    item.style.transform = "translateY(20px)";
+                }
+            }
+        });
+
+        // Scroll suave a la galería al filtrar
+        if(category !== 'all') {
+            document.getElementById('galeria').scrollIntoView({ behavior: 'smooth' });
+        } else {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    }
+
+    // CONTROL DE MÚSICA
+    function toggleMusic() {
+        const music = document.getElementById('bgMusic');
+        const status = document.getElementById('status');
+        if (music.paused) {
+            music.play();
+            status.innerText = "ON";
+            status.style.color = "#00ff00";
+        } else {
+            music.pause();
+            status.innerText = "OFF";
+            status.style.color = "white";
+        }
+    }
+
+    // EFECTO DE APARICIÓN AL HACER SCROLL
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = "1";
+                entry.target.style.transform = "translateY(0)";
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.gallery-item').forEach(item => {
+        item.style.opacity = "0";
+        item.style.transform = "translateY(30px)";
+        item.style.transition = "all 0.8s ease-out";
+        observer.observe(item);
+    });
+</script>
