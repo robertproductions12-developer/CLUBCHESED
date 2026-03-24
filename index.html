@@ -1,190 +1,429 @@
-<audio id="bgMusic" loop>
-    <source src="musi.mp3" type="audio/mpeg">
-</audio>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Club de Conquiguías Chesed</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-blue: #050a18;
+            --accent-blue: #007bff;
+            --gold: #d4af37;
+            --text-light: #ffffff;
+            --glass: rgba(255, 255, 255, 0.05);
+            --transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
 
-<div class="music-toggle" onclick="toggleMusic()" id="musicBtn">
-    <span>🎵 MÚSICA</span>
-    <small id="status">OFF</small>
-</div>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
 
-<nav>
-    <div class="logo-nav" onclick="filterGallery('all')">Club Chesed</div>
-    <ul class="nav-links">
-        <li><a onclick="filterGallery('all')">Inicio</a></li>
-        <li><a onclick="filterGallery('generaciones')">Generaciones</a></li>
-        <li><a onclick="filterGallery('miembros')">Miembros</a></li>
-        <li><a onclick="filterGallery('campamentos')">Campamentos</a></li>
-    </ul>
-    <a href="#redes" class="btn-main"><i class="fas fa-heart"></i> SÍGUENOS</a>
-</nav>
+        body {
+            background-color: var(--primary-blue);
+            color: var(--text-light);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
 
-<!-- HEADER -->
-<header class="hero" id="inicio">
-    <video autoplay muted loop playsinline class="hero-video">
-        <source src="intro.mp4" type="video/mp4">
-    </video>
-</header>
+        /* --- NAVEGACIÓN Y MENÚ HAMBURGUESA --- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(5, 10, 24, 0.9);
+            backdrop-filter: blur(15px);
+            z-index: 2000;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
 
-<!-- GALERÍA FILTRABLE -->
-<main class="full-gallery" id="galeria">
-    
-    <!-- CATEGORÍA: GENERACIONES -->
-    <div class="gallery-item" data-category="generaciones">
-        <img src="sii.png" alt="Generacion">
-        <div class="item-info">
-            <span class="category-tag">Generaciones</span>
-            <h3>Legado Chesed</h3>
-            <p>Nuestra historia contada a través de los años y las vidas transformadas.</p>
+        .logo-nav {
+            font-weight: 900;
+            font-size: 1.2rem;
+            letter-spacing: 3px;
+            color: var(--gold);
+            text-transform: uppercase;
+            z-index: 2100;
+        }
+
+        .hamburger {
+            cursor: pointer;
+            z-index: 2100;
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 30px;
+            height: 2px;
+            background: var(--gold);
+            transition: var(--transition);
+        }
+
+        .hamburger.active span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
+
+        .nav-overlay {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            height: 100vh;
+            background: var(--primary-blue);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: var(--transition);
+            z-index: 2050;
+        }
+
+        .nav-overlay.open { right: 0; }
+
+        .nav-links {
+            list-style: none;
+            text-align: center;
+        }
+
+        .nav-links li { margin: 25px 0; }
+
+        .nav-links a {
+            text-decoration: none;
+            color: white;
+            font-size: 1.8rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover { color: var(--gold); }
+
+        /* --- VIDEO HEADER --- */
+        .hero {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            background-color: black;
+        }
+
+        .hero-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.6;
+        }
+
+        /* --- SECCIONES DE GALERÍA --- */
+        .category-section {
+            padding: 80px 0 20px;
+        }
+
+        .category-title {
+            padding-left: 5%;
+            margin-bottom: 30px;
+            font-size: 0.8rem;
+            letter-spacing: 5px;
+            color: var(--gold);
+            text-transform: uppercase;
+            border-left: 4px solid var(--gold);
+            margin-left: 5%;
+        }
+
+        .gallery-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .gallery-item {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 1.5s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        /* Botón de Información */
+        .info-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--gold);
+            color: var(--primary-blue);
+            border: none;
+            cursor: pointer;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: var(--transition);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .info-btn:hover { transform: scale(1.1); background: white; }
+
+        /* Panel de Información Ocultable */
+        .item-info {
+            position: absolute;
+            bottom: -100%;
+            left: 0;
+            width: 100%;
+            padding: 40px 5%;
+            background: linear-gradient(to top, rgba(5,10,24,0.95) 80%, transparent);
+            transition: var(--transition);
+            z-index: 5;
+        }
+
+        .item-info.active { bottom: 0; }
+
+        .item-info h3 {
+            font-size: 1.8rem;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .item-info p {
+            font-size: 1rem;
+            max-width: 600px;
+            color: rgba(255,255,255,0.9);
+            line-height: 1.6;
+        }
+
+        /* --- MUSICA Y SOCIAL --- */
+        .music-toggle {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 1000;
+            background: rgba(5,10,24,0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--gold);
+            padding: 10px 15px;
+            border-radius: 50px;
+            cursor: pointer;
+            color: white;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .social-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 40px 0;
+        }
+
+        .social-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--glass);
+            color: white;
+            text-decoration: none;
+            transition: var(--transition);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .social-btn:hover { background: var(--gold); color: var(--primary-blue); transform: translateY(-5px); }
+
+        @media (max-width: 768px) {
+            .hero { height: 60vh; }
+            .item-info h3 { font-size: 1.4rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bgMusic" loop>
+        <source src="musi.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="music-toggle" onclick="toggleMusic()">
+        <span>🎵 MÚSICA</span>
+        <small id="status">OFF</small>
+    </div>
+
+    <nav>
+        <div class="logo-nav">Club Chesed</div>
+        <div class="hamburger" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
         </div>
+    </nav>
+
+    <div class="nav-overlay" id="navOverlay">
+        <ul class="nav-links">
+            <li><a href="#inicio" onclick="toggleMenu()">Inicio</a></li>
+            <li><a href="#generaciones" onclick="toggleMenu()">Generaciones</a></li>
+            <li><a href="#miembros" onclick="toggleMenu()">Miembros</a></li>
+            <li><a href="#campamentos" onclick="toggleMenu()">Campamentos</a></li>
+            <li><a href="#redes" onclick="toggleMenu()">Siguenos</a></li>
+        </ul>
     </div>
 
-    <!-- CATEGORÍA: CAMPAMENTOS -->
-    <div class="gallery-item" data-category="campamentos">
-        <img src="mini.png" alt="Campamento">
-        <div class="item-info">
-            <span class="category-tag">Campamentos</span>
-            <h3>Camatagua 2025</h3>
-            <p>Donde la naturaleza se encuentra con la fe. Una experiencia inolvidable.</p>
-        </div>
-    </div>
+    <!-- HEADER -->
+    <header class="hero" id="inicio">
+        <video autoplay muted loop playsinline class="hero-video">
+            <source src="intro.mp4" type="video/mp4">
+        </video>
+    </header>
 
-    <div class="gallery-item" data-category="campamentos">
-        <img src="mini.png" alt="Campamento">
-        <div class="item-info">
-            <span class="category-tag">Campamentos</span>
-            <h3>Camatagua 2025</h3>
-            <p>Donde la naturaleza se encuentra con la fe. Una experiencia inolvidable.</p>
-        </div>
-    </div>
-
-    <!-- CATEGORÍA: MIEMBROS -->
-    <div class="gallery-item" data-category="miembros">
-        <img src="miller.jpg" alt="Miembros">
-        <div class="item-info">
-            <span class="category-tag">Miembros</span>
-            <h3>Líderes del Mañana</h3>
-            <p>Juventud comprometida con el servicio y la excelencia espiritual.</p>
-        </div>
-    </div>
-
-    <!-- CATEGORÍA: GENERACIONES -->
-    <div class="gallery-item" data-category="generaciones">
-        <img src="https://via.placeholder.com/1920x1080/050a18/gold?text=GENERACION+2" alt="Foto">
-        <div class="item-info">
-            <span class="category-tag">Generaciones</span>
-            <h3>Clase de Guías Mayores</h3>
-            <p>Preparados para servir en cualquier lugar donde Dios nos llame.</p>
-        </div>
-    </div>
-
-    <!-- CATEGORÍA: CAMPAMENTOS -->
-    <div class="gallery-item" data-category="campamentos">
-        <img src="https://via.placeholder.com/1920x1080/050a18/007bff?text=CAMPAMENTO+2" alt="Foto">
-        <div class="item-info">
-            <span class="category-tag">Campamentos</span>
-            <h3>Noches de Fogata</h3>
-            <p>Momentos de reflexión y hermandad bajo las estrellas.</p>
-        </div>
-    </div>
-
-</main>
-
-<!-- PIE DE PÁGINA Y REDES -->
-<footer id="redes" style="padding: 80px 5% 40px; text-align: center; background: #030712;">
-    <img src="sii.png" style="width: 80px; margin-bottom: 20px; filter: grayscale(0.5);" alt="Logo">
-    <h2 style="color: var(--gold); letter-spacing: 4px; font-size: 1rem; margin-bottom: 10px;">CONÉCTATE CON NOSOTROS</h2>
-    
-    <div class="social-container">
-        <a href="https://instagram.com/tu_usuario" target="_blank" class="social-btn ig" title="Instagram">
-            <i class="fab fa-instagram"></i>
-        </a>
-        <a href="https://tiktok.com/@tu_usuario" target="_blank" class="social-btn tk" title="TikTok">
-            <i class="fab fa-tiktok"></i>
-        </a>
-        <a href="https://youtube.com/@tu_canal" target="_blank" class="social-btn yt" title="YouTube">
-            <i class="fab fa-youtube"></i>
-        </a>
-    </div>
-
-    <p style="margin-top: 40px; opacity: 0.4; font-size: 0.7rem; letter-spacing: 1px;">
-        © 2026 CLUB DE CONQUIGUÍAS CHESED. <br>
+    <!-- GALERÍA POR CATEGORÍAS -->
+    <main>
         
-    </p>
-</footer>
+        <!-- CATEGORÍA: GENERACIONES -->
+        <section class="category-section" id="generaciones">
+            <h2 class="category-title">Nuestras Generaciones</h2>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="sii.png" alt="Generacion">
+                    <button class="info-btn" onclick="toggleInfo(this)"><i class="fas fa-plus"></i></button>
+                    <div class="item-info">
+                        <h3>Legado Chesed</h3>
+                        <p>Una historia de fe escrita por jóvenes valientes a través de las décadas.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-<script>
-    // FUNCIÓN DE FILTRADO
-    function filterGallery(category) {
-        const items = document.querySelectorAll('.gallery-item');
-        const links = document.querySelectorAll('.nav-links a');
+        <!-- CATEGORÍA: MIEMBROS -->
+        <section class="category-section" id="miembros">
+            <h2 class="category-title">Miembros del Club</h2>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="miller.jpg" alt="Miembros">
+                    <button class="info-btn" onclick="toggleInfo(this)"><i class="fas fa-plus"></i></button>
+                    <div class="item-info">
+                        <h3>Liderazgo Activo</h3>
+                        <p>Nuestra directiva y guías dedicados al servicio y la excelencia.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-        // Actualizar estado activo en el menú
-        links.forEach(link => {
-            link.classList.remove('active');
-            if(link.innerText.toLowerCase() === category.toLowerCase()) {
-                link.classList.add('active');
-            }
-        });
+        <!-- CATEGORÍA: CAMPAMENTOS -->
+        <section class="category-section" id="campamentos">
+            <h2 class="category-title">Aventuras y Campamentos</h2>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="mini.png" alt="Campamento">
+                    <button class="info-btn" onclick="toggleInfo(this)"><i class="fas fa-plus"></i></button>
+                    <div class="item-info">
+                        <h3>Camatagua 2025</h3>
+                        <p>Momentos inolvidables bajo las estrellas, fortaleciendo nuestra hermandad.</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Fogata">
+                    <button class="info-btn" onclick="toggleInfo(this)"><i class="fas fa-plus"></i></button>
+                    <div class="item-info">
+                        <h3>Noches de Fogata</h3>
+                        <p>Donde las historias y las canciones se convierten en recuerdos eternos.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-        items.forEach(item => {
-            // Si es 'all' (inicio), mostrar todo
-            if (category === 'all') {
-                item.classList.remove('hidden');
-                item.style.opacity = "1";
-                item.style.transform = "translateY(0)";
+    </main>
+
+    <!-- FOOTER -->
+    <footer id="redes" style="padding: 60px 5%; text-align: center; background: #030712;">
+        <h2 style="color: var(--gold); letter-spacing: 3px; font-size: 0.9rem;">CONÉCTATE CON EL CLUB</h2>
+        <div class="social-container">
+            <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-btn"><i class="fab fa-tiktok"></i></a>
+            <a href="#" class="social-btn"><i class="fab fa-youtube"></i></a>
+        </div>
+        <p style="opacity: 0.3; font-size: 0.7rem; letter-spacing: 1px;">© 2026 CLUB DE CONQUIGUÍAS CHESED</p>
+    </footer>
+
+    <script>
+        // MENU HAMBURGUESA
+        function toggleMenu() {
+            document.querySelector('.hamburger').classList.toggle('active');
+            document.getElementById('navOverlay').classList.toggle('open');
+            // Bloquear scroll si el menú está abierto
+            if(document.getElementById('navOverlay').classList.contains('open')) {
+                document.body.style.overflow = 'hidden';
             } else {
-                // Si coincide con la categoría, mostrar, sino ocultar
-                if (item.getAttribute('data-category') === category) {
-                    item.classList.remove('hidden');
-                    setTimeout(() => {
-                        item.style.opacity = "1";
-                        item.style.transform = "translateY(0)";
-                    }, 10);
-                } else {
-                    item.classList.add('hidden');
-                    item.style.opacity = "0";
-                    item.style.transform = "translateY(20px)";
-                }
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // MOSTRAR/OCULTAR INFO
+        function toggleInfo(btn) {
+            const infoPanel = btn.nextElementSibling;
+            const icon = btn.querySelector('i');
+            
+            infoPanel.classList.toggle('active');
+            
+            if(infoPanel.classList.contains('active')) {
+                icon.className = 'fas fa-times';
+                btn.style.background = 'white';
+            } else {
+                icon.className = 'fas fa-plus';
+                btn.style.background = 'var(--gold)';
+            }
+        }
+
+        // CONTROL DE MÚSICA
+        function toggleMusic() {
+            const music = document.getElementById('bgMusic');
+            const status = document.getElementById('status');
+            if (music.paused) {
+                music.play();
+                status.innerText = "ON";
+                status.style.color = "#00ff00";
+            } else {
+                music.pause();
+                status.innerText = "OFF";
+                status.style.color = "white";
+            }
+        }
+
+        // CERRAR INFO AL HACER CLICK FUERA (Opcional para profesionalismo)
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.gallery-item')) {
+                document.querySelectorAll('.item-info').forEach(panel => panel.classList.remove('active'));
+                document.querySelectorAll('.info-btn i').forEach(icon => icon.className = 'fas fa-plus');
+                document.querySelectorAll('.info-btn').forEach(btn => btn.style.background = 'var(--gold)');
             }
         });
-
-        // Scroll suave a la galería al filtrar
-        if(category !== 'all') {
-            document.getElementById('galeria').scrollIntoView({ behavior: 'smooth' });
-        } else {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-    }
-
-    // CONTROL DE MÚSICA
-    function toggleMusic() {
-        const music = document.getElementById('bgMusic');
-        const status = document.getElementById('status');
-        if (music.paused) {
-            music.play();
-            status.innerText = "ON";
-            status.style.color = "#00ff00";
-        } else {
-            music.pause();
-            status.innerText = "OFF";
-            status.style.color = "white";
-        }
-    }
-
-    // EFECTO DE APARICIÓN AL HACER SCROLL
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = "1";
-                entry.target.style.transform = "translateY(0)";
-            }
-        });
-    }, { threshold: 0.1 });
-
-    document.querySelectorAll('.gallery-item').forEach(item => {
-        item.style.opacity = "0";
-        item.style.transform = "translateY(30px)";
-        item.style.transition = "all 0.8s ease-out";
-        observer.observe(item);
-    });
-</script>
+    </script>
+</body>
+</html>
